@@ -102,6 +102,6 @@ jobs:
                   files: |
                       ./glsl-lsp-x86_64-pc-windows-msvc/glsl-lsp-x86_64-pc-windows-msvc-${{ needs.build.outputs.VERSION }}.zip
                       ./glsl-lsp-x86_64-unknown-linux-gnu/glsl-lsp-x86_64-unknown-linux-gnu-${{ needs.build.outputs.VERSION }}.zip
-                      ./glsl-lsp-x86_64-apple-darwin/glsl-lsp-x86_64-apple-darwin-${{ needs.build.outputs.VERSION }}.zip }}.zip
+                      ./glsl-lsp-x86_64-apple-darwin/glsl-lsp-x86_64-apple-darwin-${{ needs.build.outputs.VERSION }}.zip
                       ./glsl-lsp-aarch64-apple-darwin/glsl-lsp-aarch64-apple-darwin-${{ needs.build.outputs.VERSION }}.zip
                   fail_on_unmatched_files: true
