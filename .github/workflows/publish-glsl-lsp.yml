@@ -36,12 +36,14 @@ jobs:
         strategy:
             matrix:
                 include:
-                  - os: windows-latest
-                    target: x86_64-pc-windows-msvc
-                  - os: ubuntu-latest
-                    target: x86_64-unknown-linux-gnu
-                  - os: macos-latest
-                    target: x86_64-apple-darwin
+                    - os: windows-latest
+                      target: x86_64-pc-windows-msvc
+                    - os: ubuntu-latest
+                      target: x86_64-unknown-linux-gnu
+                    - os: macos-latest
+                      target: x86_64-apple-darwin
+                    - os: macos-arm-latest
+                      target: aarch64-apple-darwin
         outputs:
             VERSION: ${{ steps.build-script.outputs.VERSION }}
         runs-on: ${{ matrix.os }}
@@ -69,8 +71,8 @@ jobs:
             - name: Upload artifact for later github release
               uses: actions/upload-artifact@v3
               with:
-                name: glsl-lsp-${{ matrix.target }}
-                path: ./publish/glsl-lsp-${{ matrix.target }}-${{ steps.build-script.outputs.VERSION }}.zip
+                  name: glsl-lsp-${{ matrix.target }}
+                  path: ./publish/glsl-lsp-${{ matrix.target }}-${{ steps.build-script.outputs.VERSION }}.zip
 
     gh-release:
         name: "Create github release"
@@ -100,5 +102,6 @@ jobs:
                   files: |
                       ./glsl-lsp-x86_64-pc-windows-msvc/glsl-lsp-x86_64-pc-windows-msvc-${{ needs.build.outputs.VERSION }}.zip
                       ./glsl-lsp-x86_64-unknown-linux-gnu/glsl-lsp-x86_64-unknown-linux-gnu-${{ needs.build.outputs.VERSION }}.zip
-                      ./glsl-lsp-x86_64-apple-darwin/glsl-lsp-x86_64-apple-darwin-${{ needs.build.outputs.VERSION }}.zip
+                      ./glsl-lsp-x86_64-apple-darwin/glsl-lsp-x86_64-apple-darwin-${{ needs.build.outputs.VERSION }}.zip }}.zip
+                      ./glsl-lsp-aarch64-apple-darwin/glsl-lsp-aarch64-apple-darwin-${{ needs.build.outputs.VERSION }}.zip
                   fail_on_unmatched_files: true

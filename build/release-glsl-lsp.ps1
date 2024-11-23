@@ -44,6 +44,10 @@ switch ($Target) {
 		Copy-Item -Path (Join-Path $script:ROOT "server" "target" $Target "release" "glsl-lsp") `
 			-Destination (Join-Path $script:DEST "glsl-lsp") -Verbose 
 	}
+	"aarch64-apple-darwin" {
+		Copy-Item -Path (Join-Path $script:ROOT "server" "target" $Target "release" "glsl-lsp") `
+			-Destination (Join-Path $script:DEST "glsl-lsp") -Verbose 
+	}
 }
 Compress-Archive -Path (Join-Path $script:ROOT "publish" "glsl-lsp-$Target-$version") `
 	-DestinationPath (Join-Path $script:ROOT "publish" "glsl-lsp-$Target-$version.zip") -Verbose
