@@ -66,6 +66,8 @@
 
 pub mod preprocessor;
 
+use serde::{Deserialize, Serialize};
+
 use crate::{GlslVersion, Span, SpanEncoding, Spanned};
 
 /// A vector of tokens representing a GLSL source string.
@@ -210,7 +212,7 @@ pub enum ParseErr {
 /// The purpose of this struct is to hold structured data that gets extracted out and checked-against if needed.
 /// Hence, this struct is marked as `#[non_exhaustive]` and new fields may be added at any time without causing a
 /// breaking change.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[non_exhaustive]
 pub struct Metadata {
 	/// The type of encoding of spans.
@@ -224,7 +226,7 @@ pub struct Metadata {
 }
 
 /// A token representing a unit of text in the GLSL source string.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum Token {
 	/// A number, e.g. `1`, `517u`, `0xA9C`, `07113`, `7.3e-2`, `.015LF`.
 	Num {
@@ -367,7 +369,7 @@ pub enum Token {
 }
 
 /// The type/notation of a number token.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum NumType {
 	/// A decimal is any number beginning with `1-9` without a decimal point or an exponent, or just the digit `0`
 	/// on its own.
@@ -381,7 +383,7 @@ pub enum NumType {
 }
 
 /// A mathematical/comparison operator.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum OpTy {
 	/* Maths */
 	/// The `+` symbol.
@@ -787,7 +789,9 @@ fn parse_tokens<C: Char>(
 			}
 		} else if is_number_start(&current) {
 			/// The current state when parsing a number.
-			#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+			#[derive(
+				Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize,
+			)]
 			enum NumState {
 				/// Parsing either an octal or decimal or a floating point number (depending on what follows).
 				Zero,

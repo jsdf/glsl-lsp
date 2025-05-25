@@ -60,10 +60,11 @@ use crate::{
 	syntax::*,
 	Either, GlslVersion, Span, SpanEncoding, Spanned,
 };
+use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
 
 /// The result of a parsed GLSL token tree.
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct ParseResult {
 	/// The abstract syntax tree. By nature of this tree being parsed after having applied conditional compilation,
 	/// it will not contain any conditional compilation directives.
@@ -534,7 +535,11 @@ pub fn parse_from_token_stream(
 						});
 						let node = tree.get_mut(top(&stack)).unwrap();
 						node.span.end = token_span.end;
-						let Either::Right(cond_block) = node.children.last_mut().unwrap() else { unreachable!() };
+						let Either::Right(cond_block) =
+							node.children.last_mut().unwrap()
+						else {
+							unreachable!()
+						};
 						cond_block.conditions.push((
 							Conditional::ElseIf,
 							token_span,
@@ -601,7 +606,11 @@ pub fn parse_from_token_stream(
 						});
 						let node = tree.get_mut(top(&stack)).unwrap();
 						node.span.end = token_span.end;
-						let Either::Right(cond_block) = node.children.last_mut().unwrap() else { unreachable!() };
+						let Either::Right(cond_block) =
+							node.children.last_mut().unwrap()
+						else {
+							unreachable!()
+						};
 						cond_block.conditions.push((
 							Conditional::Else,
 							token_span,
@@ -664,7 +673,11 @@ pub fn parse_from_token_stream(
 						// Close the condition block.
 						let node = tree.get_mut(top(&stack)).unwrap();
 						node.span.end = token_span.end;
-						let Either::Right(cond_block) = node.children.last_mut().unwrap() else { unreachable!() };
+						let Either::Right(cond_block) =
+							node.children.last_mut().unwrap()
+						else {
+							unreachable!()
+						};
 						cond_block.end = Some((
 							Conditional::End,
 							token_span,
@@ -708,7 +721,9 @@ pub fn parse_from_token_stream(
 	if stack.len() > 0 {
 		let node = tree.get_mut(top(&stack)).unwrap();
 		node.span.end = token_stream_end;
-		let Either::Right(cond) = node.children.last_mut().unwrap() else { unreachable!(); };
+		let Either::Right(cond) = node.children.last_mut().unwrap() else {
+			unreachable!();
+		};
 		syntax_diags.push(Syntax::PreprocConditional(
 			PreprocConditionalDiag::UnclosedBlock(
 				cond.conditions[0].1,
@@ -1372,7 +1387,9 @@ impl TokenTree {
 					None => break,
 				};
 			let node = &self.tree[*node_id];
-			let Some(child) = node.children.get(*child_idx) else { break; };
+			let Some(child) = node.children.get(*child_idx) else {
+				break;
+			};
 
 			match child {
 				Either::Left(arena_id) => {
@@ -1645,7 +1662,9 @@ impl TokenTree {
 			};
 
 			loop {
-				let Some(token) = tokens.get(0) else { break; };
+				let Some(token) = tokens.get(0) else {
+					break;
+				};
 
 				if token.span.is_before(&range) {
 					// This token is before the current range. We clearly have already gone past it, so it can
@@ -1728,7 +1747,13 @@ impl TokenTree {
 				match child {
 					Either::Left(_) => {}
 					Either::Right(block) => {
-						let Some((ty,_, _, span, _, _, _)) = block.conditions.iter().find(|(_,_, _, _, id, _, _)| node_id == id) else { continue; };
+						let Some((ty, _, _, span, _, _, _)) = block
+							.conditions
+							.iter()
+							.find(|(_, _, _, _, id, _, _)| node_id == id)
+						else {
+							continue;
+						};
 						directives.push((*ty, *span));
 					}
 				}
@@ -1748,9 +1773,11 @@ impl TokenTree {
 	) -> Vec<usize> {
 		// There is no existing key, so we need to construct one from scratch. Each node within the vector has
 		// a list of all prerequisite parents, so we can just use that, (removing the unneeded parent node IDs).
-		let Some((_new_selection_node_id, parent_info)) = self.order_by_appearance.get(chosen_conditional_directive) else {
-				return Vec::new();
-			};
+		let Some((_new_selection_node_id, parent_info)) =
+			self.order_by_appearance.get(chosen_conditional_directive)
+		else {
+			return Vec::new();
+		};
 
 		let mut key = parent_info
 			.iter()
@@ -1784,7 +1811,9 @@ impl TokenTree {
 					None => break,
 				};
 			let node = &self.tree[*node_id];
-			let Some(child) = node.children.get(*child_idx) else { break; };
+			let Some(child) = node.children.get(*child_idx) else {
+				break;
+			};
 
 			match child {
 				Either::Left(_) => {
@@ -1958,9 +1987,11 @@ impl TokenTree {
 				}
 
 				// This node doesn't even exist
-				let Some((_node_id, parent_info)) = self.order_by_appearance.get(*node) else {
-				return None;
-			};
+				let Some((_node_id, parent_info)) =
+					self.order_by_appearance.get(*node)
+				else {
+					return None;
+				};
 
 				// This node depends on the to-remove node.
 				if parent_info
@@ -2193,7 +2224,9 @@ impl<'a> TokenStreamProvider<'a> for DynamicTokenStreamProvider<'a> {
 					}
 				};
 			let node = self.tree.get(*node_ptr).unwrap();
-			let Some(child) = node.children.get(*child_idx) else { return None; };
+			let Some(child) = node.children.get(*child_idx) else {
+				return None;
+			};
 
 			match child {
 				Either::Left(arena_id) => {
@@ -2787,16 +2820,17 @@ impl<'a, Provider: TokenStreamProvider<'a>> Walker<'a, Provider> {
 							let mut args = Vec::new();
 							let mut arg = Vec::new();
 							let r_paren_span = loop {
-								let (token, token_span) =
-									match stream.get(*cursor) {
-										Some(t) => t,
-										None => {
-											syntax_diags.push(Syntax::PreprocDefine(PreprocDefineDiag::ParamsExpectedRParen(
+								let (token, token_span) = match stream
+									.get(*cursor)
+								{
+									Some(t) => t,
+									None => {
+										syntax_diags.push(Syntax::PreprocDefine(PreprocDefineDiag::ParamsExpectedRParen(
 											prev_span.next_single_width()
 										)));
-											break 'outer;
-										}
-									};
+										break 'outer;
+									}
+								};
 
 								match token {
 									Token::Comma => {

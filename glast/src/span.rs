@@ -1,3 +1,4 @@
+use serde::{Deserialize, Serialize};
 /// A span in the source string.
 ///
 /// Keeps track of the offset between **code units** from the start of the source string, e.g. `if=abc` would be
@@ -49,7 +50,7 @@
 /// `start` position. If this invariant is not upheld then interacting with this span, for example to resolve the
 /// cursor position, will result in logical bugs and incorrect behaviour but it will never cause a panic or memory
 /// unsafety.
-#[derive(Clone, Copy, PartialEq, Eq)]
+#[derive(Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Span {
 	pub start: usize,
 	pub end: usize,
@@ -236,7 +237,7 @@ impl std::fmt::Display for Span {
 }
 
 /// The type of code units the `Span`s are counting.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum SpanEncoding {
 	/// Spans count `utf-8` code units.
 	Utf8,

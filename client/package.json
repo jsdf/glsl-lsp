@@ -2,20 +2,27 @@
 	"name": "glsl-lsp",
 	"displayName": "GLSL",
 	"description": "OpenGL Shading Language support for Visual Studio Code.",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"preview": true,
-	"publisher": "kuba-p",
+	"publisher": "jsdf",
 	"author": {
-		"name": "kuba_p"
+		"name": "jsdf",
+		"url": "https://github.com/jsdf"
 	},
+	"contributors": [
+		{
+			"name": "kuba_p",
+			"url": "https://github.com/KubaP"
+		}
+	],
 	"license": "MIT",
 	"homepage": "https://github.com/KubaP/glsl-lsp/tree/master/client",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/KubaP/glsl-lsp"
+		"url": "https://github.com/jsdf/glsl-lsp"
 	},
 	"bugs": {
-		"url": "https://github.com/KubaP/glsl-lsp/issues"
+		"url": "https://github.com/jsdf/glsl-lsp/issues"
 	},
 	"markdown": "github",
 	"engines": {

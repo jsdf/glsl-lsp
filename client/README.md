@@ -1,6 +1,9 @@
 # OpenGL Shading Language for Visual Studio Code
 This extension adds language support for the OpenGL Shading Language to Visual Studio Code.
 
+## Note on this Fork
+This is a fork of the original `glsl-lsp` extension by [kuba_p](https://github.com/KubaP). This version is maintained by [jsdf](https://github.com/jsdf) and includes updates such as support for Apple Silicon, which was lacking in the previously published version.
+
 It current supports the following features:
 - Basic semantic highlighting
 - Syntax errors
@@ -33,10 +36,10 @@ Start troubleshooting by looking at the server logs. Log messages are found in t
 
 To fully capture the messages between the editor and the server, set the `glsl.trace.server` setting to `"verbose"`. These messages will be logged to the `Output > GLSL Language Server Trace` channel.
 
-If you encounter a crash or bug, please file an [issue in the repo](https://github.com/KubaP/glsl-lsp/issues). The issue guide outlines the steps necessary to produce a high quality bug report; this is really appreciated as it makes the bug quicker to track down and fix. You can get the current version information by running `GLSL: Show version` from the command palette.
+If you encounter a crash or bug, please file an [issue in the repo](https://github.com/jsdf/glsl-lsp/issues). The issue guide outlines the steps necessary to produce a high quality bug report; this is really appreciated as it makes the bug quicker to track down and fix. You can get the current version information by running `GLSL: Show version` from the command palette.
 
 ## Contribution
-Contributions are always welcome, be it code, tests, documentation or bug reports, feature requests, etc. <!-- Please see the [contribution guide]() for more details.--> For help, please file an [issue in the repo](https://github.com/KubaP/glsl-lsp/issues).
+Contributions are always welcome, be it code, tests, documentation or bug reports, feature requests, etc. <!-- Please see the [contribution guide]() for more details.--> For help, please file an [issue in the repo](https://github.com/jsdf/glsl-lsp/issues).
 
 ## License
 This project is licensed under the **MIT** license - see [LICENSE](LICENSE) for details.

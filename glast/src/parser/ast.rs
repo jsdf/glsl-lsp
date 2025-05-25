@@ -31,6 +31,8 @@ use crate::{
 	Either, Span, Spanned,
 };
 
+use serde::{Deserialize, Serialize};
+
 /// This type represents a value which can be omitted in accordance to the GLSL specification.
 ///
 /// This type is equivalent to [`Option`]. The reason for the two types is to differentiate when a node's field is
@@ -39,7 +41,18 @@ use crate::{
 ///
 /// This type implements the [`From`] trait for conversions to/from [`Option`], as well as a handful of helper
 /// methods which match the equivalent `Option` signature.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+#[derive(
+	Debug,
+	Clone,
+	Copy,
+	PartialEq,
+	Eq,
+	PartialOrd,
+	Ord,
+	Hash,
+	Serialize,
+	Deserialize,
+)]
 pub enum Omittable<T> {
 	/// Some value of type `T`.
 	Some(T),
@@ -48,20 +61,20 @@ pub enum Omittable<T> {
 }
 
 /// An identifier.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Ident {
 	pub name: String,
 	pub span: Span,
 }
 
 /// A node within the abstract syntax tree.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Node {
 	pub ty: NodeTy,
 	pub span: Span,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum NodeTy {
 	/// An empty statement, e.g. `;`.
 	Empty,
@@ -191,14 +204,14 @@ pub enum NodeTy {
 }
 
 /// A scope of nodes.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Scope {
 	pub contents: Vec<Node>,
 	pub span: Span,
 }
 
 /// A parameter in a function definition/declaration.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Param {
 	pub type_: Type,
 	pub ident: Omittable<Ident>,
@@ -206,7 +219,7 @@ pub struct Param {
 }
 
 /// An if-statement branch.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct IfBranch {
 	pub condition: Spanned<IfCondition>,
 	pub body: Option<Scope>,
@@ -214,7 +227,7 @@ pub struct IfBranch {
 }
 
 /// The condition of an if-statement branch.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum IfCondition {
 	If(Option<Expr>),
 	ElseIf(Option<Expr>),
@@ -222,7 +235,7 @@ pub enum IfCondition {
 }
 
 /// A switch case.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct SwitchCase {
 	pub expr: Either<Option<Expr>, ()>,
 	pub body: Option<Scope>,
@@ -230,14 +243,14 @@ pub struct SwitchCase {
 }
 
 /// A type.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Type {
 	pub ty: TypeTy,
 	pub qualifiers: Vec<Qualifier>,
 	pub span: Span,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum TypeTy {
 	/// A type which has only a single value.
 	Single(Primitive),
@@ -262,7 +275,7 @@ pub type ArrSize = Omittable<Expr>;
 /// The reason for the separation of this enum and the [`Fundamental`] enum is that all fundamental types (aside
 /// from `void`) can be either a scalar or an n-dimensional vector. Furthermore, any of the types in this enum can
 /// be on their own or as part of a n-dimensional array.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum Primitive {
 	/// A scalar primitive type.
 	Scalar(Fundamental),
@@ -304,7 +317,7 @@ pub enum Primitive {
 /// A fundamental type.
 ///
 /// These are the most fundamental types in the language, on which all other types are composed.
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub enum Fundamental {
 	Void,
 	Bool,
@@ -318,7 +331,7 @@ pub enum Fundamental {
 ///
 /// The names of the variants match the type name suffixes, but any 1D/2D/3D letters are flipped because Rust
 /// typenames cannot begin with a digit.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum TexType {
 	/// `_1D`
 	D1,
@@ -361,13 +374,13 @@ pub enum TexType {
 }
 
 /// A type qualifier.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Qualifier {
 	pub ty: QualifierTy,
 	pub span: Span,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum QualifierTy {
 	Const,
 	In,
@@ -398,13 +411,13 @@ pub enum QualifierTy {
 }
 
 /// An individual layout property within a layout qualifier.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Layout {
 	pub ty: LayoutTy,
 	pub span: Span,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum LayoutTy {
 	Shared,
 	Packed,
@@ -453,7 +466,7 @@ pub enum LayoutTy {
 }
 
 /// A GLSL profile.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum ProfileTy {
 	Core,
 	Compatability,
@@ -461,7 +474,7 @@ pub enum ProfileTy {
 }
 
 /// The behaviour of a GLSL extension.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum BehaviourTy {
 	Require,
 	Enable,
@@ -470,7 +483,7 @@ pub enum BehaviourTy {
 }
 
 /// A macro definition.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum Macro {
 	/// An object-like macro.
 	Object { ident: Ident },
@@ -874,13 +887,13 @@ impl Primitive {
 /* EXPRESSION-RELATED STUFF BELOW */
 
 /// An expression node.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Expr {
 	pub ty: ExprTy,
 	pub span: Span,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum ExprTy {
 	/// A literal constant.
 	Lit(Lit),
@@ -933,13 +946,13 @@ pub enum ExprTy {
 }
 
 /// A binary operator.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct BinOp {
 	pub ty: BinOpTy,
 	pub span: Span,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum BinOpTy {
 	Add,
 	Sub,
@@ -974,13 +987,13 @@ pub enum BinOpTy {
 }
 
 /// A prefix operator.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct PreOp {
 	pub ty: PreOpTy,
 	pub span: Span,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum PreOpTy {
 	Add,
 	Sub,
@@ -990,19 +1003,19 @@ pub enum PreOpTy {
 }
 
 /// A postfix operator.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct PostOp {
 	pub ty: PostOpTy,
 	pub span: Span,
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum PostOpTy {
 	Add,
 	Sub,
 }
 
 /// A literal constant.
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub enum Lit {
 	Bool(bool),
 	Int(i64),
@@ -1191,15 +1204,16 @@ impl Lit {
 pub(crate) mod conditional {
 	use super::Ident;
 	use crate::Span;
+	use serde::{Deserialize, Serialize};
 
 	/// An expression node.
-	#[derive(Debug, Clone, PartialEq)]
+	#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 	pub struct Expr {
 		pub ty: ExprTy,
 		pub span: Span,
 	}
 
-	#[derive(Debug, Clone, PartialEq)]
+	#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 	pub enum ExprTy {
 		/// An integer literal.
 		Num(usize),
@@ -1218,13 +1232,13 @@ pub(crate) mod conditional {
 	}
 
 	/// A binary operator.
-	#[derive(Debug, Clone, PartialEq)]
+	#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 	pub struct BinOp {
 		pub ty: BinOpTy,
 		pub span: Span,
 	}
 
-	#[derive(Debug, Clone, PartialEq)]
+	#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 	pub enum BinOpTy {
 		Add,
 		Sub,
@@ -1247,13 +1261,13 @@ pub(crate) mod conditional {
 	}
 
 	/// A prefix operator.
-	#[derive(Debug, Clone, PartialEq)]
+	#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 	pub struct PreOp {
 		pub ty: PreOpTy,
 		pub span: Span,
 	}
 
-	#[derive(Debug, Clone, PartialEq)]
+	#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 	pub enum PreOpTy {
 		Neg,
 		Flip,

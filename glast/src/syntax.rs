@@ -2,9 +2,10 @@
 
 use crate::Span;
 use bitflags::bitflags;
+use serde::{Deserialize, Serialize};
 
 /// A syntax highlighting token.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub struct SyntaxToken {
 	/// The syntax token type.
 	pub ty: SyntaxType,
@@ -19,7 +20,7 @@ pub struct SyntaxToken {
 /// For semantic highlighting purposes, any [`UncheckedIdent`](SyntaxToken::UncheckedIdent) tokens must be
 /// name-resolved into a more concrete identifier type. This functionality is currently waiting on the `analyzer`
 /// module.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum SyntaxType {
 	/// A keyword.
 	Keyword,
@@ -97,6 +98,7 @@ bitflags! {
 	/// - `MACRO_BODY` = `2`,
 	/// - `UNDEFINE` = `4`,
 	/// - `CONDITIONAL` = `8`.
+	#[derive(Serialize, Deserialize)]
 	pub struct SyntaxModifiers: u32 {
 		/// Tokens within the macro signature, e.g. the `BAR(A, B)` within `#define BAR(A, B) foo`.
 		const MACRO_SIGNATURE = 0b00000001;

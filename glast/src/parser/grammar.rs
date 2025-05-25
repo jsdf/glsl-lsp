@@ -1549,8 +1549,9 @@ fn parse_function<'a, P: TokenStreamProvider<'a>>(
 					match walker.peek() {
 						Some((token, span)) => {
 							if *token == Token::Comma
-								|| *token == Token::RParen || *token
-								== Token::Semi || *token == Token::LBrace
+								|| *token == Token::RParen
+								|| *token == Token::Semi || *token
+								== Token::LBrace
 							{
 								break span;
 							} else {
@@ -3131,8 +3132,8 @@ fn parse_switch<'a, P: TokenStreamProvider<'a>>(
 					match walker.peek() {
 						Some((token, token_span)) => {
 							if *token == Token::Case
-								|| *token == Token::Default || *token
-								== Token::RBrace
+								|| *token == Token::Default
+								|| *token == Token::RBrace
 							{
 								// We don't consume the token because the next iteration of the main loop will deal
 								// with it appropriately.
@@ -4320,9 +4321,9 @@ fn parse_version_directive<'a, P: TokenStreamProvider<'a>>(
 		span: Span,
 	) -> Option<usize> {
 		match number {
-			450 => Some(number),
-			100 | 110 | 120 | 130 | 140 | 150 | 300 | 310 | 320 | 330 | 400
-			| 410 | 420 | 430 | 460 => {
+			450 | 300 => Some(number),
+			100 | 110 | 120 | 130 | 140 | 150 | 310 | 320 | 330 | 400 | 410
+			| 420 | 430 | 460 => {
 				walker.push_syntax_diag(Syntax::PreprocVersion(
 					PreprocVersionDiag::UnsupportedVersion(span, number),
 				));
@@ -4363,7 +4364,8 @@ fn parse_version_directive<'a, P: TokenStreamProvider<'a>>(
 						walker.push_colour(span, SyntaxType::DirectiveProfile);
 						walker.push_syntax_diag(Syntax::PreprocVersion(
 							PreprocVersionDiag::InvalidProfileCasing(
-								span, "core",
+								span,
+								"core".to_string(),
 							),
 						));
 						Some(ProfileTy::Core)
@@ -4373,7 +4375,7 @@ fn parse_version_directive<'a, P: TokenStreamProvider<'a>>(
 						walker.push_syntax_diag(Syntax::PreprocVersion(
 							PreprocVersionDiag::InvalidProfileCasing(
 								span,
-								"compatability",
+								"compatability".to_string(),
 							),
 						));
 						Some(ProfileTy::Compatability)
@@ -4382,7 +4384,8 @@ fn parse_version_directive<'a, P: TokenStreamProvider<'a>>(
 						walker.push_colour(span, SyntaxType::DirectiveProfile);
 						walker.push_syntax_diag(Syntax::PreprocVersion(
 							PreprocVersionDiag::InvalidProfileCasing(
-								span, "es",
+								span,
+								"es".to_string(),
 							),
 						));
 						Some(ProfileTy::Es)
@@ -4580,7 +4583,8 @@ fn parse_extension_directive<'a, P: TokenStreamProvider<'a>>(
 						BehaviourTy::Require,
 						Some(Syntax::PreprocExt(
 							PreprocExtDiag::InvalidBehaviourCasing(
-								span, "require",
+								span,
+								"require".to_string(),
 							),
 						)),
 					)),
@@ -4588,7 +4592,8 @@ fn parse_extension_directive<'a, P: TokenStreamProvider<'a>>(
 						BehaviourTy::Enable,
 						Some(Syntax::PreprocExt(
 							PreprocExtDiag::InvalidBehaviourCasing(
-								span, "enable",
+								span,
+								"enable".to_string(),
 							),
 						)),
 					)),
@@ -4596,7 +4601,8 @@ fn parse_extension_directive<'a, P: TokenStreamProvider<'a>>(
 						BehaviourTy::Warn,
 						Some(Syntax::PreprocExt(
 							PreprocExtDiag::InvalidBehaviourCasing(
-								span, "warn",
+								span,
+								"warn".to_string(),
 							),
 						)),
 					)),
@@ -4604,7 +4610,8 @@ fn parse_extension_directive<'a, P: TokenStreamProvider<'a>>(
 						BehaviourTy::Disable,
 						Some(Syntax::PreprocExt(
 							PreprocExtDiag::InvalidBehaviourCasing(
-								span, "disable",
+								span,
+								"disable".to_string(),
 							),
 						)),
 					)),

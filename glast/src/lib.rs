@@ -116,16 +116,24 @@
 //! that is being progressively worked towards.
 
 pub mod diag;
+pub mod interpreter;
 pub mod lexer;
 pub mod parser;
 mod span;
 pub mod syntax;
+pub mod web;
 
 pub use span::*;
 
+use serde::{Deserialize, Serialize};
+
 /// Describes a GLSL version.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
+#[derive(
+	Debug, Clone, Copy, PartialEq, Eq, Hash, Default, Serialize, Deserialize,
+)]
 pub enum GlslVersion {
+	// OpenGL 3.0
+	_300,
 	/// OpenGL 4.5
 	_450,
 	/// OpenGL 4.6
@@ -140,6 +148,7 @@ impl GlslVersion {
 	/// Parses a number into a GLSL version.
 	fn parse(num: usize) -> Option<Self> {
 		match num {
+			300 => Some(Self::_300),
 			450 => Some(Self::_450),
 			460 => Some(Self::_460),
 			_ => None,
@@ -148,14 +157,14 @@ impl GlslVersion {
 }
 
 /// Holds either one or the other value.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Either<L, R> {
 	Left(L),
 	Right(R),
 }
 
 /// Holds one of 3 possible values.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 enum Either3<A, B, C> {
 	A(A),
 	B(B),

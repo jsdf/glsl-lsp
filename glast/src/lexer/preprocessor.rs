@@ -40,13 +40,15 @@
 //! - Has a different `line` directive, since GLSL has no concept of filenames.
 //! - Has different pre-defined macros, (which depend on the exact GLSL version).
 
+use serde::{Deserialize, Serialize};
+
 use super::{is_word, is_word_start, Lexer};
 use crate::{GlslVersion, Span, SpanEncoding, Spanned};
 
 /// A vector of tokens representing a specific preprocessor directive.
 ///
 /// See the individual token types for an overview of the directive and the behaviour of the lexer.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum TokenStream {
 	/// An empty directive; just a `#` with nothing else on the same line.
 	Empty,
@@ -176,7 +178,7 @@ pub enum TokenStream {
 /// - There are no individual `core/compatability/es` keyword tokens; they are just a `Word`. This is to make it
 ///   easier to perform error recovery in the case that a word has incorrect capitalization but otherwise would
 ///   match, e.g. `CORE` instead of `core`.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum VersionToken {
 	/// An integer number.
 	Num(usize),
@@ -210,7 +212,7 @@ pub enum VersionToken {
 /// - There are no individual `require/enable/warn/disable/all` keyword tokens; they are just a `Word`. This is to
 ///   make it easier to perform error recovery in the case that a word has incorrect capitalization but otherwise
 ///   would match, e.g. `WARN` instead of `warn`.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum ExtensionToken {
 	/// A word that matches `([a-z]|[A-Z]|_)([a-z]|[A-Z]|[0-9]|_)*`.
 	Word(String),
@@ -242,7 +244,7 @@ pub enum ExtensionToken {
 ///   produces an [`Ident`](LineToken::Ident) token. This is to support macro expansion within the directive, but
 ///   this **does not** check if a macro with the given name actually exists.
 /// - Anything else produces the [`Invalid`](LineToken::Invalid) token.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum LineToken {
 	/// An integer number.
 	Num(usize),
@@ -276,7 +278,7 @@ pub enum LineToken {
 /// - When the lexer comes across `)` it produces a [`RParen`](DefineToken::RParen) token.
 /// - When the lexer comes across `,` it produces a [`Comma`](DefineToken::Comma) token.
 /// - Anything else produces the [`Invalid`](DefineToken::Invalid) token.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum DefineToken {
 	/// An identifier
 	Ident(String),
@@ -303,7 +305,7 @@ pub enum DefineToken {
 /// - When the lexer comes across anything which matches the `([a-z]|[A-Z]|_)([a-z]|[A-Z]|[0-9]|_)*\s` pattern it
 ///   produces a [`Ident`](UndefToken::Ident) token.
 /// - Anything else produces the [`Invalid`](UndefToken::Invalid) token.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum UndefToken {
 	/// An identifier.
 	Ident(String),
@@ -321,7 +323,7 @@ pub enum UndefToken {
 /// - specified punctuation symbols,
 /// - comments.
 // TODO: Improve the documentation for this.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub enum ConditionToken {
 	/// An integer number.
 	Num(usize),

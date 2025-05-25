@@ -1,0 +1,196 @@
+[
+  {
+    "ty": {
+      "VersionDirective": {
+        "version": [
+          450,
+          {
+            "start": 9,
+            "end": 12
+          }
+        ],
+        "profile": {
+          "Some": [
+            "Core",
+            {
+              "start": 13,
+              "end": 17
+            }
+          ]
+        }
+      }
+    },
+    "span": {
+      "start": 0,
+      "end": 17
+    }
+  },
+  {
+    "ty": {
+      "FnDef": {
+        "return_type": {
+          "ty": {
+            "Single": {
+              "Scalar": "Void"
+            }
+          },
+          "qualifiers": [],
+          "span": {
+            "start": 18,
+            "end": 22
+          }
+        },
+        "ident": {
+          "name": "main",
+          "span": {
+            "start": 23,
+            "end": 27
+          }
+        },
+        "params": [],
+        "body": {
+          "contents": [
+            {
+              "ty": {
+                "VarDefInit": {
+                  "type_": {
+                    "ty": {
+                      "Single": {
+                        "Vector": [
+                          "Float",
+                          2
+                        ]
+                      }
+                    },
+                    "qualifiers": [],
+                    "span": {
+                      "start": 36,
+                      "end": 40
+                    }
+                  },
+                  "ident": {
+                    "name": "uv",
+                    "span": {
+                      "start": 41,
+                      "end": 43
+                    }
+                  },
+                  "value": {
+                    "ty": {
+                      "Binary": {
+                        "left": {
+                          "ty": {
+                            "ObjAccess": {
+                              "obj": {
+                                "ty": {
+                                  "Ident": {
+                                    "name": "gl_FragCoord",
+                                    "span": {
+                                      "start": 46,
+                                      "end": 58
+                                    }
+                                  }
+                                },
+                                "span": {
+                                  "start": 46,
+                                  "end": 58
+                                }
+                              },
+                              "leaf": {
+                                "ty": {
+                                  "Ident": {
+                                    "name": "xy",
+                                    "span": {
+                                      "start": 59,
+                                      "end": 61
+                                    }
+                                  }
+                                },
+                                "span": {
+                                  "start": 59,
+                                  "end": 61
+                                }
+                              }
+                            }
+                          },
+                          "span": {
+                            "start": 46,
+                            "end": 61
+                          }
+                        },
+                        "op": {
+                          "ty": "Div",
+                          "span": {
+                            "start": 62,
+                            "end": 63
+                          }
+                        },
+                        "right": {
+                          "ty": {
+                            "FnCall": {
+                              "ident": {
+                                "name": "vec2",
+                                "span": {
+                                  "start": 64,
+                                  "end": 68
+                                }
+                              },
+                              "args": [
+                                {
+                                  "ty": {
+                                    "Lit": {
+                                      "Float": 800.0
+                                    }
+                                  },
+                                  "span": {
+                                    "start": 69,
+                                    "end": 74
+                                  }
+                                },
+                                {
+                                  "ty": {
+                                    "Lit": {
+                                      "Float": 600.0
+                                    }
+                                  },
+                                  "span": {
+                                    "start": 76,
+                                    "end": 81
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          "span": {
+                            "start": 64,
+                            "end": 82
+                          }
+                        }
+                      }
+                    },
+                    "span": {
+                      "start": 46,
+                      "end": 82
+                    }
+                  }
+                }
+              },
+              "span": {
+                "start": 36,
+                "end": 83
+              }
+            }
+          ],
+          "span": {
+            "start": 30,
+            "end": 85
+          }
+        }
+      }
+    },
+    "span": {
+      "start": 18,
+      "end": 85
+    }
+  }
+]

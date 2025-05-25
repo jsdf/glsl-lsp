@@ -12,10 +12,12 @@
 //! order to provide very specific and precise diagnostics without having to hardcode `&'static` strings
 //! everywhere. In order to make the amount more managable, most diagnostics are split into nested enums.
 
+use serde::{Deserialize, Serialize};
+
 use crate::{Span, Spanned};
 
 /// The severity of a diagnostic.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Severity {
 	Error,
 	Warning,
@@ -24,7 +26,7 @@ pub enum Severity {
 /// All semantic diagnostics.
 ///
 /// Error diagnostics also have an associated error code.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
 pub enum Semantic {
 	/// WARNING - Found an empty preprocessor directive.
@@ -78,7 +80,7 @@ impl Semantic {
 }
 
 /// All syntax diagnostics.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
 pub enum Syntax {
 	/// Diagnostics for expressions.
@@ -137,7 +139,7 @@ pub enum Syntax {
 }
 
 /// Syntax diagnostics for expressions.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
 pub enum ExprDiag {
 	// TODO: Track the spans of the suffixes and generate errors when a suffix mismatches the number type.
@@ -343,7 +345,7 @@ pub enum ExprDiag {
 }
 
 /// Syntax diagnostics for statement.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
 pub enum StmtDiag {
 	/// ERROR - Did not find a semi-colon after an expression, (to make it into a valid expression statement).
@@ -686,7 +688,7 @@ pub enum StmtDiag {
 }
 
 /// Syntax diagnostics for the `#version` directive.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
 pub enum PreprocVersionDiag {
 	/// ERROR - Did not find a number after the `version` keyword.
@@ -725,11 +727,11 @@ pub enum PreprocVersionDiag {
 	///
 	/// - `0` - The span of the word.
 	/// - `1` - The corrected spelling.
-	InvalidProfileCasing(Span, &'static str),
+	InvalidProfileCasing(Span, String),
 }
 
 /// Syntax diagnostics for the `#extension` directive.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
 pub enum PreprocExtDiag {
 	/// ERROR - Did not find a name after the `extension` keyword.
@@ -767,11 +769,11 @@ pub enum PreprocExtDiag {
 	///
 	/// - `0` - The span of the word.
 	/// - `1` - The corrected spelling.
-	InvalidBehaviourCasing(Span, &'static str),
+	InvalidBehaviourCasing(Span, String),
 }
 
 /// Syntax diagnostics for the `#line` directive.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
 pub enum PreprocLineDiag {
 	/// ERROR - Did not find a number after the `line` keyword.
@@ -786,7 +788,7 @@ pub enum PreprocLineDiag {
 }
 
 /// Syntax diagnostics for the `#define` and `#undef` directives.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
 pub enum PreprocDefineDiag {
 	/* DEFINE */
@@ -841,7 +843,7 @@ pub enum PreprocDefineDiag {
 }
 
 /// Syntax diagnostics for the conditional directives.
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[non_exhaustive]
 pub enum PreprocConditionalDiag {
 	/// ERROR - Did not find an identifier token after the `ifdef` keyword.
