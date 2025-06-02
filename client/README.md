@@ -2,7 +2,9 @@
 This extension adds language support for the OpenGL Shading Language to Visual Studio Code.
 
 ## Note on this Fork
-This is a fork of the original `glsl-lsp` extension by [kuba_p](https://github.com/KubaP). This version, published by [jsdf](https://github.com/jsdf), includes updates such as support for Apple Silicon, which was lacking in the previously published version. This fork was created primarily to provide a build with Apple Silicon support and is not actively maintained.
+This is a fork of the original `glsl-lsp` extension by [kuba_p](https://github.com/KubaP). This version, published by [jsdf](https://github.com/jsdf), adds support for Apple Silicon, which was lacking in the previously published version. 
+
+## original readme
 
 It current supports the following features:
 - Basic semantic highlighting

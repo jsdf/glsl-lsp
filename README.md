@@ -1,9 +1,15 @@
 # glsl-lsp
 This repository contains a heavily **work-in-progress** project aiming to provide a language extension for the OpenGL Shading Language.
 
-This project is targeting GLSL `450` & `460` initially, but there are plans to support older versions in the future, including but not limited to `110`, `300 es`, `330` and `410`.
+**An extension for Visual Studio Code is available on the [marketplace](https://marketplace.visualstudio.com/items?itemName=jsdf.glsl-lsp-jsdf).**
 
-**An extension for Visual Studio Code is available on the [marketplace](https://marketplace.visualstudio.com/items?itemName=kuba-p.glsl-lsp).**
+
+## Note on this Fork
+This is a fork of the original `glsl-lsp` extension by [kuba_p](https://github.com/KubaP). This version, published by [jsdf](https://github.com/jsdf), adds support for Apple Silicon, which was lacking in the previously published version. 
+
+## original readme
+
+This project is targeting GLSL `450` & `460` initially, but there are plans to support older versions in the future, including but not limited to `110`, `300 es`, `330` and `410`.
 
 ⚠ Current state of functionality: Basic semantic highlighting and syntax diagnostics reporting. Advanced support for macro expansion and conditional compilation.
 
