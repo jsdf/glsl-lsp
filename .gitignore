@@ -13,3 +13,5 @@ target
 /out
 /publish
 /kuba-p.glsl*
+
+env.sh

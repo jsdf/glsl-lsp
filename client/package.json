@@ -1,6 +1,6 @@
 {
-	"name": "glsl-lsp",
-	"displayName": "GLSL",
+	"name": "glsl-lsp-jsdf",
+	"displayName": "GLSL (jsdf fork)",
 	"description": "OpenGL Shading Language support for Visual Studio Code.",
 	"version": "0.0.3",
 	"preview": true,
